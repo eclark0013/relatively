@@ -1,0 +1,37 @@
+-- Create a table for users
+/* 
+First table here holds info on each user.
+Zip code uses VARCHAR(10) as data type to account for zip + 4 situations
+    and zip codes from other countries that may include letters. */
+CREATE TABLE IF NOT EXISTS users (
+    user_id INTEGER PRIMARY KEY,
+    age INTEGER,
+    gender VARCHAR(1),
+    occupation VARCHAR(50),
+    zip_code VARCHAR(10)
+);
+
+CREATE TABLE IF NOT EXISTS movies (
+    movie_id SERIAL PRIMARY KEY,
+    title VARCHAR(255),
+    release_date DATE,
+    imdb_url TEXT,
+    action INT CHECK (action IN (0,1)),
+    adventure INT CHECK (adventure IN (0,1)),
+    animation INT CHECK (animation IN (0,1)),
+    children INT CHECK (children IN (0,1)),
+    comedy INT CHECK (comedy IN (0,1)),
+    crime INT CHECK (crime IN (0,1)),
+    documentary INT CHECK (documentary IN (0,1)),
+    drama INT CHECK (drama IN (0,1)),
+    fantasy INT CHECK (fantasy IN (0,1)),
+    film_noir INT CHECK (film_noir IN (0,1)),
+    horror INT CHECK (horror IN (0,1)),
+    musical INT CHECK (musical IN (0,1)),
+    mystery INT CHECK (mystery IN (0,1)),
+    romance INT CHECK (romance IN (0,1)),
+    sci_fi INT CHECK (sci_fi IN (0,1)),
+    thriller INT CHECK (thriller IN (0,1)),
+    war INT CHECK (war IN (0,1)),
+    western INT CHECK (western IN (0,1))   
+)
