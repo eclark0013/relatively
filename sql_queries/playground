@@ -1,0 +1,50 @@
+/* Using the classic approach, how many movies 
+have a rating higher than movie_id = 1 */
+SELECT
+   movie_avgs.movie_id,
+   movie_avgs.average
+FROM
+    (
+        SELECT 
+            movie_id,
+            AVG(rating) average
+        FROM ratings
+            GROUP BY movie_id
+    ) movie_avgs
+WHERE 
+    movie_avgs.average >=
+    (
+        SELECT 
+            AVG(rating)
+        FROM ratings
+        WHERE movie_id = 1
+    )
+ORDER BY movie_avgs.average ASC
+
+/* 
+Defining plus minus differential (plus_minus) as 
+the average difference in rating between the user's 
+rating on this film and the user's average rating. 
+
+Here I find the plus_minus of movie_id = 1 */
+SELECT
+    AVG(movie_avgs.plus_minus)
+FROM
+    (
+        SELECT 
+            a.movie_id,
+            a.user_id,
+            a.rating,
+            b.user_avg,
+            a.rating - b.user_avg AS plus_minus
+        FROM ratings a JOIN 
+            (
+                SELECT 
+                    user_id,
+                    AVG(rating) as user_avg
+                FROM ratings
+                    GROUP BY user_id
+            ) b 
+            ON a.user_id = b.user_id
+            WHERE movie_id=1
+    ) movie_avgs
