@@ -1,82 +1,14 @@
-/* Using the classic approach, how many movies 
-have a rating higher than movie_id = 1 */
+/* Of those that are ranked highest in the classic rating
+ system, how many may have a high average due to so few 
+ rankings for that film. Do I need a bigger data set?
+ 
+ First, see how many ratings does each fil have on average.*/
+
 SELECT
-   movie_avgs.movie_id,
-   movie_avgs.average
-FROM
-    (
-        SELECT 
-            movie_id,
-            AVG(rating) average
-        FROM ratings
-            GROUP BY movie_id
-    ) movie_avgs
-WHERE 
-    movie_avgs.average >=
-    (
-        SELECT 
-            AVG(rating)
-        FROM ratings
-        WHERE movie_id = 1
-    )
-ORDER BY movie_avgs.average ASC
-
-/* 
-Defining plus minus differential (plus_minus) as 
-the average difference in rating between the user's 
-rating on this film and the user's average rating. 
-
-Here I find the plus_minus of movie_id = 1
-by averaging all the plus_minus scores for that movie */
-SELECT
-    AVG(movie_avgs.plus_minus)
-FROM
-    (
-        SELECT 
-            a.movie_id,
-            a.user_id,
-            a.rating,
-            b.user_avg,
-            a.rating - b.user_avg AS plus_minus
-        FROM ratings a JOIN 
-            (
-                SELECT 
-                    user_id,
-                    AVG(rating) as user_avg
-                FROM ratings
-                    GROUP BY user_id
-            ) b 
-            ON a.user_id = b.user_id
-            WHERE movie_id=1
-    ) movie_avgs
-
-
-/* Here I find the average plus_minus of each movie */
-SELECT
-    movie_avgs.movie_id,
-    movies.title,
-    avg(movie_avgs.plus_minus) AS movie_plus_minus
-FROM
-    (
-        SELECT 
-            a.movie_id,
-            a.user_id,
-            a.rating,
-            b.user_avg,
-            a.rating - b.user_avg AS plus_minus
-        FROM ratings a JOIN 
-            (
-                SELECT 
-                    user_id,
-                    AVG(rating) as user_avg
-                FROM ratings
-                    GROUP BY user_id
-            ) b 
-            ON a.user_id = b.user_id
-    ) movie_avgs
-    JOIN movies on movie_avgs.movie_id = movies.movie_id
-GROUP BY movie_avgs.movie_id, movies.title
-ORDER BY movie_plus_minus DESC
+    movie_id,
+    COUNT(*) AS number_of_ratings
+    FROM ratings
+    GROUP BY movie_id
 
 SELECT movies.movie_id, movies.title, AVG(rating) FROM 
     ratings JOIN movies ON ratings.movie_id 
@@ -85,9 +17,11 @@ SELECT movies.movie_id, movies.title, AVG(rating) FROM
     GROUP BY movies.movie_id, movies.title
 
 SELECT * FROM ratings
-    WHERE movie_id = 1642
-    ORDER BY rating DESC
+    WHERE movie_id IN (814, 1536, 1467, 1500, 1599, 1642, 1653, 1293, 1449, 1398, 1650)
+    ORDER BY movie_id, rating DESC
 
 SELECT * FROM ratings
     WHERE user_id = 707
     ORDER BY rating DESC
+
+SELECT * FROM 

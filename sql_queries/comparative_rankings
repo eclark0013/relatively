@@ -1,0 +1,28 @@
+/* Using the classic approach, how many movies 
+have a rating higher than movie_id = 1.
+
+First find all those films and their averages.
+Then take a COUNT of that finding. */
+SELECT
+    COUNT(*)
+    FROM (    
+    SELECT
+        movie_avgs.movie_id,
+        movie_avgs.average
+        FROM
+            (
+                SELECT 
+                    movie_id,
+                    AVG(rating) average
+                FROM ratings
+                    GROUP BY movie_id
+            ) movie_avgs
+        WHERE 
+            movie_avgs.average >
+            (
+                SELECT 
+                    AVG(rating)
+                FROM ratings
+                WHERE movie_id = 1
+            )
+        ORDER BY movie_avgs.average ASC) c

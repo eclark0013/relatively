@@ -1,0 +1,59 @@
+
+
+/* 
+Defining plus minus differential (plus_minus) as 
+the average difference in rating between the user's 
+rating on this film and the user's average rating. 
+
+Here I find the plus_minus of movie_id = 1
+by averaging all the plus_minus scores for that movie */
+SELECT
+        AVG(movie_avgs.plus_minus)
+    FROM
+        (
+            SELECT 
+                a.movie_id,
+                a.user_id,
+                a.rating,
+                b.user_avg,
+                a.rating - b.user_avg AS plus_minus
+            FROM ratings a JOIN 
+                (
+                    SELECT 
+                        user_id,
+                        AVG(rating) as user_avg
+                    FROM ratings
+                        GROUP BY user_id
+                ) b 
+                ON a.user_id = b.user_id
+                WHERE movie_id=1
+        ) movie_avgs
+
+        
+/* Here I find the average plus_minus of each movie */
+SELECT
+    movie_avgs.movie_id,
+    movies.title,
+    avg(movie_avgs.plus_minus) AS movie_plus_minus
+FROM
+    (
+        SELECT 
+            a.movie_id,
+            a.user_id,
+            a.rating,
+            b.user_avg,
+            a.rating - b.user_avg AS plus_minus
+        FROM ratings a JOIN 
+            (
+                SELECT 
+                    user_id,
+                    AVG(rating) as user_avg
+                FROM ratings
+                    GROUP BY user_id
+            ) b 
+            ON a.user_id = b.user_id
+    ) movie_avgs
+    JOIN movies on movie_avgs.movie_id = movies.movie_id
+GROUP BY movie_avgs.movie_id, movies.title
+ORDER BY movie_plus_minus DESC
+
