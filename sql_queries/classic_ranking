@@ -9,6 +9,13 @@ SELECT
         GROUP BY ratings.movie_id, title
         ORDER BY AVG(rating) DESC
 
+/* See how many ratings each movie has */
+SELECT
+    movie_id,
+    COUNT(*) AS number_of_ratings
+    FROM ratings
+    GROUP BY movie_id
+
 /* See how many ratings are given for each film
 in the top 20 given the classical approach. */
 SELECT
@@ -34,10 +41,10 @@ SELECT
         GROUP BY movie_id
     ) q
     ON cr.movie_id = q.movie_id
-    WHERE q.number_of_ratings >= 10
+    WHERE q.number_of_ratings >= 20
     ORDER BY cr.average_rating DESC 
     /* Toggle DESC/ASC to find films that 
-    were better or worse than expectations  */
+    have lower or higher average */
     LIMIT 20
 /* As suspected, the top 15 movies
 all have a number_of_ratings less than 5. Trying

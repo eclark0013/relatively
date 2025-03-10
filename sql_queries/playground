@@ -2,7 +2,7 @@
  system, how many may have a high average due to so few 
  rankings for that film. Do I need a bigger data set?
  
- First, see how many ratings does each fil have on average.*/
+ First, see how many ratings does each film have on average.*/
 
 SELECT
     movie_id,
@@ -25,3 +25,4 @@ SELECT * FROM ratings
     ORDER BY rating DESC
 
 SELECT * FROM 
+
