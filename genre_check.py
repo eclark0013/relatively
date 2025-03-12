@@ -15,11 +15,28 @@ conn = psycopg2.connect(
 )
 
 cur = conn.cursor()
-cur.execute("SELECT * FROM movies LIMIT 8;")
+cur.execute("SELECT movie_id, title, unknown, action, adventure, animation, children,  "
+"comedy, crime, documentary, drama, fantasy, film_noir, horror, musical, "
+"mystery, romance, sci_fi, thriller, war, western "
+"FROM movies LIMIT 10;")
 rows = cur.fetchall()
 
+# Genre names to match column names with 1s
+genre_names = [
+    "Unknown", "Action", "Adventure", "Animation", "Children", "Comedy", "Crime", "Documentary", "Drama", 
+    "Fantasy", "Film Noir", "Horror", "Musical", "Mystery", "Romance", "Sci-Fi", "Thriller", 
+    "War", "Western"
+]
+
 for row in rows:
-    print(row)
+    movie_id = row[0]
+    movie_title = row[1]
+    movie_genres = []
+    for i, genre in enumerate(row[2:]):  # Start from index 2 to skip the movie_id and title
+        if genre == 1:  # Check if the genre value is 1
+            movie_genres.append(genre_names[i])  # Append genre name 
+    print (f"Movie ID: {movie_id}, titled: {movie_title} belongs to genres {movie_genres}")
+
 
 cur.close()
 conn.close()
