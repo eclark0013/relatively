@@ -1,0 +1,7 @@
+{
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "python.defaultInterpreterPath": "/Users/ericclark/Desktop/DataScience/Projects/relatively/venv/bin/python3",
+    "python.venvPath": "/Users/ericclark/Desktop/DataScience/Projects/relatively/venv"
+}
