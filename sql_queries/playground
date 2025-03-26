@@ -24,5 +24,7 @@
 --     WHERE user_id = 707
 --     ORDER BY rating DESC
 
-SELECT DISTINCT user_id FROM ratings WHERE user_id != 1
+SELECT DISTINCT user_id, COUNT(*) FROM ratings GROUP BY user_id HAVING COUNT(*) < 30 ORDER BY COUNT(*)
+
+-- SELECT * FROM ratings WHERE user_id = 33
 
